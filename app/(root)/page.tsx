@@ -1,6 +1,17 @@
 import SearchForm from '@/components/SearchForm';
 import StartupCard from '@/components/StartupCard';
 
+export interface StartupCardType {
+	_createdAt: string;
+	views: number;
+	author: { _id: number; name: string };
+	_id: number;
+	description: string;
+	image: string;
+	category: string;
+	title: string;
+}
+
 export default async function Home({
 	searchParams,
 }: {
@@ -8,25 +19,14 @@ export default async function Home({
 }) {
 	const query = (await searchParams).query;
 
-	interface StartupCardType {
-		_createdAt: string;
-		views: number;
-		author: { _id: number; name: string };
-		_id: number;
-		description: string;
-		image: string;
-		category: string;
-		title: string;
-	}
-
 	const posts: StartupCardType[] = [
 		{
-			_createdAt: new Date(),
+			_createdAt: new Date().toDateString(),
 			views: 55,
 			author: { _id: 1, name: 'Elon Musk' },
 			_id: 1,
-			description: 'This is a description',
-			image: 'https://en.wikipedia.org/wiki/Elon_Musk#/media/File:Elon_Musk_Royal_Society_crop.jpg',
+			description: 'We Robots are an initiative by Elon Musk of Tesla/Boring Company/X fame.',
+			image: '/img/elon.jpg',
 			category: 'Robots',
 			title: 'We Robots',
 		},
@@ -49,9 +49,7 @@ export default async function Home({
 				</p>
 				<ul className='mt-7 card_grid'>
 					{posts.length > 0 ? (
-						posts.map((post: StartupCardType, index: number) => (
-							<StartupCard key={post?._id} post={post} />
-						))
+						posts.map((post: StartupCardType) => <StartupCard key={post?._id} post={post} />)
 					) : (
 						<p className='no-results'>No Startups found</p>
 					)}
