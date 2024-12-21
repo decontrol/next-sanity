@@ -1,16 +1,7 @@
 import SearchForm from '@/components/SearchForm';
-import StartupCard from '@/components/StartupCard';
-
-export interface StartupCardType {
-	_createdAt: string;
-	views: number;
-	author: { _id: number; name: string };
-	_id: number;
-	description: string;
-	image: string;
-	category: string;
-	title: string;
-}
+import StartupCard, { StartupCardType } from '@/components/StartupCard';
+import { client } from '@/sanity/lib/client';
+import { STARTUPS_QUERY } from '@/sanity/lib/queries';
 
 export default async function Home({
 	searchParams,
@@ -19,18 +10,8 @@ export default async function Home({
 }) {
 	const query = (await searchParams).query;
 
-	const posts: StartupCardType[] = [
-		{
-			_createdAt: new Date().toDateString(),
-			views: 55,
-			author: { _id: 1, name: 'Elon Musk' },
-			_id: 1,
-			description: 'We Robots are an initiative by Elon Musk of Tesla/Boring Company/X fame.',
-			image: '/img/elon.jpg',
-			category: 'Robots',
-			title: 'We Robots',
-		},
-	];
+	const posts = await client.fetch(STARTUPS_QUERY);
+
 	return (
 		<>
 			<section className='pink_container'>
